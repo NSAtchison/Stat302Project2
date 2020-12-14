@@ -1,8 +1,9 @@
 ---
 title: "Project 2: Stat302Project2 Tutorial"
+author: "Nathan Atchison"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Project 2: Stat302Project2 Tutorial}
+  %\VignetteIndexEntry{Stat302Project2 Tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

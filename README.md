@@ -8,6 +8,16 @@
 The vignette demonstrates example usage of all main functions. Please [file an issue](https://github.com/bryandmartin/corncob/issues) if you have a request for a tutorial that is not currently included. You can see the vignette by using the following code (note that this requires a TeX installation to view properly):
 
 
+## Installation
+
+To download the Stat302Project2 package, use the code below.
+
+``` r
+# install.packages("devtools")
+devtools::install_github("NSAtchison/Stat302Project2")
+library(Stat302Project2)
+```
+
 ``` r
 # install.packages("devtools")
 devtools::install_github("NSAtchison/Stat302Project2", build_vignette = TRUE, build_opts = c())
