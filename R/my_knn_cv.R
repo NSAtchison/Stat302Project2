@@ -1,6 +1,6 @@
-#' KNN function
+#' K-Nearest-Neighbor cross-validation function
 #'
-#' This function runs a K-Nearest-Neighbor cross validation
+#' This function does a K-Nearest-Neighbor cross-validation
 #'
 #' @param train Dataframe input containing information used to predict class
 #'   of each observation.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/my_knn_cv.R
 \name{my_knn_cv}
 \alias{my_knn_cv}
-\title{KNN function}
+\title{K-Nearest-Neighbor cross-validation function}
 \usage{
 my_knn_cv(train, cl, k_nn, k_cv)
 }
@@ -24,7 +24,7 @@ all observations and a numeric \code{cv_err} representing the
 cross-validation misclassification error.
 }
 \description{
-This function runs a K-Nearest-Neighbor cross validation
+This function does a K-Nearest-Neighbor cross-validation
 }
 \examples{
 my_knn_cv(my_penguins[,3:6], my_penguins$species, 1, 5)
