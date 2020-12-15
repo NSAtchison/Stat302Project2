@@ -2,8 +2,10 @@
 
 export(f_to_c)
 export(my_knn_cv)
+export(my_lm)
 export(my_pow)
 export(my_rf_cv)
 import(class)
 import(magrittr)
 import(randomForest)
+importFrom(tibble,tibble)
