@@ -20,6 +20,7 @@
 #'
 #' @examples
 #' my_knn_cv(my_penguins[,3:6], my_penguins$species, 1, 5)
+#' my_knn_cv(my_penguins[,3:6], my_penguins$species, 5, 5)
 #'
 #' @export
 #Creates the function my_knn_cv with 4 inputs: train, cl, k_nn, and k_cv
