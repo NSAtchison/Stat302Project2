@@ -26,12 +26,14 @@ my_t.test <- function(x, alternative = c("two.sided", "less", "greater"), mu) {
   #Finds degree of freedom for data
   degFree <- length(x) - 1
   #Finds the test Statistic for the data
-  testStat <- (mean(test_data) - mu) / (sd(test_data) / sqrt(sample.size))
+  testStat <- (mean(x) - mu) / (sd(x) / sqrt(length(x)))
   #Finds the p value for either a two sided t-test or a one sided t-test
   if(alternative == "two.sided") {
     pval <- 2 * pt(abs(testStat), df = degFree, lower.tail = FALSE)
+  } else if (alternative == "greater") {
+    pval <- pt(testStat, df = degFree, lower.tail = TRUE)
   } else {
-    pval <- pt(abs(testStat), df = degFree, lower.tail = FALSE)
+    pval <- pt(testStat, df = degFree, lower.tail = FALSE)
   }
   #returns the test statistic, degree of freedom, alternative hypothesis, and p value for this t-test
   return(list(test_stat = testStat, df = degFree, alternative = alternative, p_val = pval))
