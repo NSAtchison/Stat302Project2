@@ -76,7 +76,7 @@ my_knn_cv <- function(train, cl, k_nn, k_cv) {
   #Stores all of the predictions into the class variable
   class <- as.vector(knn(train = data[,1:ncol(train)], test = data[,1:ncol(train)], cl = data$cl, k = k_nn, prob = TRUE))
   #Creates a list containing the class vector and the cv_error
-  x <- list("Class" = class, "CV_error" <- cv_err)
+  x <- list("Class" = as.vector(class), "CV_error" = cv_err)
   #returns the list created
   return(x)
 }
