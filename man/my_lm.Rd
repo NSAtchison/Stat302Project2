@@ -21,4 +21,5 @@ This function creates and fits a linear model
 my_lm(dist ~ speed, data = cars)
 
 }
-\keyword{inference}
+\keyword{inference,}
+\keyword{prediction}

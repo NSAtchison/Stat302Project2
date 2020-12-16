@@ -5,7 +5,7 @@
 #' @param formula Formula class object being used
 #' @param data Data frame containing data used within \code{formula}
 #'
-#' @keywords inference
+#' @keywords inference, prediction
 #'
 #' @return Table containing columns with Estimate, Std. Error, t value and Pr(>|t|)
 #'
