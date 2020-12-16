@@ -6,7 +6,7 @@ Authors@R:
            family = "Atchison",
            role = c("aut", "cre"),
            email = "Nathanatchison@rocketmail.com")
-Description: What the package does (one paragraph).
+Description: This package is used for making inferences and predicitons from information given by the user.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -20,4 +20,4 @@ Suggests:
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
-Imports: stats, dplyr, magrittr, randomForest, class, tibble, ggplot2
+Imports: stats, dplyr, magrittr, randomForest, class, tibble, ggplot2, knitr, kableExtra, ggpubr

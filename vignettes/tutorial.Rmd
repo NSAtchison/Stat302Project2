@@ -18,3 +18,120 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(Stat302Project2)
 ```
+
+Stat302Project2 is a package for taking in information and then, depending on 
+the package, creating a prediction or inference based on the inputed 
+information. This package includes 4 primary functions, my_t.test, my_lm, 
+my_knn_cv, and my_rf_cv. This is a tutorial for the Stat302Project2.
+
+To download the Stat302Project2 package, use the following code.
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("NSAtchison/Stat302Project2")
+library(Stat302Project2)
+```
+
+
+Now that the package has been installed, below there are 4 tutorials, one for 
+each function within the package and how to use and interpret their results. 
+First we will start with my_t.test.
+```{r}
+my_t.test(my_gapminder$lifeExp, alternative = "two.sided", 60)
+```
+
+With a null hypothesis of the true mean of life expectancy being 60, and a p_val of 0.09322877 which is greater than $\alpha$ = 0.05. This means that our results are not statistically signifcant, and thus there is insufficient evidence to reject the null hypothesis of the life expectancy being less than 60.
+
+```{r}
+my_t.test(my_gapminder$lifeExp, alternative = "less", 60)
+```
+With a null hypothesis of true mean of life expectancy being 60, and a p_val of 0.9533856 which is greater than $\alpha$ = 0.05. This means that our results are not statistically signifcant, and thus there is insufficient evidence to reject the null hypothesis of the true mean life expectancy being less than 60.
+
+```{r}
+my_t.test(my_gapminder$lifeExp, alternative = "greater", 60)
+```
+
+With a null hypothesis of true mean of life expectancy being 60, and a p_val of 0.04661438 which is less than $\alpha$ = 0.05. This means that our results are statistically signifcant, and thus there is sufficient evidence to reject the null hypothesis of true mean life expectancy being equal to 60 and claim that the life expectancy is greater than 60.
+
+
+Now that we have finished going over my_t.test, we will move on to my_lm.
+```{r}
+my_lm_tutorial <- my_lm(lifeExp ~ gdpPercap + continent, data = my_gapminder)
+my_lm_tutorial
+```
+
+In these results, every time the gdpPercap coefficient increases by 1, the life 
+expectancy will increase by 0.0004. Let us run a hypothesis test for this coefficient to see how statistically significant it is. Let the null hypothesis be $\beta$ = 0 and the alternate hypothesis be $\beta$ $\neq$ 0. With a null hypothesis of the true gdpPercap coefficient being zero, and a p_val of 8.552893e-73 which is less than $\alpha$ = 0.05. This means that our results are statistacally significant, and thus there is sufficient evidence to reject the null hypothesis of the true gdpPercap coefficient being zero and claim that the true gdpPercap coefficient is not equal to zero. 
+
+```{r}
+my_coef <- my_lm_tutorial[,1]
+my_matrix <- model.matrix(lifeExp ~ gdpPercap + continent, data = my_gapminder)
+y_hat <- my_matrix %*% as.matrix(my_coef)
+my_df <- data.frame("actual" = my_gapminder$lifeExp, "fitted" = y_hat, "continent" = my_gapminder$continent)
+ggplot2::ggplot(my_df, ggplot2::aes(x = fitted, y = actual)) +
+  ggplot2::geom_point() +
+  ggplot2::geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) + 
+  ggplot2::theme_bw(base_size = 15) +
+  ggplot2::labs(x = "Fitted values", y = "Actual values", title = "Actual vs. Fitted") +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+What the above plot shows is that as the fitted values increases, the model seems to fit better. As you can see in the range around 70-80 for the Fitted values, that the model fits fairly well. However, this seems to be the only spot where the mode fits as at lower fitted values, there seems to be a large amount of varaince from the model line. Overall, this model does a fairly good job as the fitted values get larger, but seems unhelpful when it has low fitted values.
+
+With that, we finish our walkthrough on my_lm and move on to my_knn_cv.
+
+```{r}
+tutorial_table <- matrix(data = NA, nrow = 10, ncol = 2)
+tutorial_comp_mat <- matrix(data = NA, nrow = nrow(my_penguins), ncol = 2)
+for(i in 1:10) {
+  curr_k_nn <- i
+  incorrect <- 0
+  tutorial_my_knn <- my_knn_cv(train = my_penguins[,3:6], cl = my_penguins$species, k_nn = curr_k_nn, k_cv = 5)
+  tutorial_comp_mat[,1] <- as.vector(my_penguins$species)
+  #tutorial_comp_mat[,2] <- as.vector(tutorial_my_knn$Class)
+  #for(i in 1:length(my_penguins$species)) {
+    #if(tutorial_comp_mat[i,1] != tutorial_comp_mat[i,2]) {
+     # incorrect <- incorrect + 1
+    #}
+  #}
+  #tutorial_table[i,1] <- incorrect / length(my_penguins$species)
+  #tutorial_table[i,2] <- tutorial_my_knn$CV_error
+}
+
+```
+
+
+With wrapping up my_knn_cv, we get to the final function within our 
+package, my_rf_cv
+
+```{r}
+tut_rf_mat <- matrix(data = NA, nrow = 30, ncol = 3)
+tut_rf_fin_tab <- matrix(data = NA, nrow = 3, ncol = 2) 
+for(i in 1:3) {
+  if(i == 1) {
+    curr_k <- 2
+  } else if (i == 2) {
+    curr_k <- 5
+  } else {
+    curr_k <- 10
+  }
+  for(j in 1:30) {
+    tut_my_rf <- my_rf_cv(k = curr_k)
+    tut_rf_mat[j,i] <- tut_my_rf
+  }
+  tut_rf_fin_tab[i,1] <- mean(tut_rf_mat[,i])
+  tut_rf_fin_tab[i,2] <- sd(tut_rf_mat[,i])
+}
+colnames(tut_rf_fin_tab) <- c("mean", "sd")
+rownames(tut_rf_fin_tab) <- c("k2", "k5", "k10")
+colnames(tut_rf_mat) <- c("k2CVerr", "k5CVerr", "k10CVerr")
+
+tut_rf_dataframe <- as.data.frame(tut_rf_mat)
+
+tut_box1 <- ggplot2::ggplot(data = tut_rf_dataframe, ggplot2::aes(y = k2CVerr)) + ggplot2::geom_boxplot(fill = "blue")
+tut_box2 <- ggplot2::ggplot(data = tut_rf_dataframe, ggplot2::aes(y = k5CVerr)) + ggplot2::geom_boxplot(fill = "red")
+tut_box3 <- ggplot2::ggplot(data = tut_rf_dataframe, ggplot2::aes(y = k10CVerr)) + ggplot2::geom_boxplot(fill = "green")
+ggpubr::ggarrange(tut_box1,tut_box2,tut_box3, labels = c("k=2", "k=5", "k=10"), ncol = 2, nrow = 2)
+kableExtra::kable_styling(knitr::kable(tut_rf_fin_tab))
+```
+
+In the boxplots above, it seems that as the value of k increases, the range of the boxplots decreases. For example, when k = 2, we see that it has larger range from it's minimum to it's maximum when compared to k = 5 and k = 10. We also see that the range difference between k = 5 and k = 10 is smaller than the difference between k = 2 and k = 10, however, we still observe that the range is smaller for k = 10.  In the table we see that when k = 2, it has a fairly larger mean and standard deviation when it comes to k = 5 and k = 10. We also see that k = 5 and k = 10 are fairly similar in their means. However, we see that the standard deviation when k = 10 is smaller when compared to when k = 5. I think that these results are the case because as the value of k increases, we are adding more folds to the data as a whole. This means that we are taking more tests within our function. As a result of taking more tests, our results will be more accurate and as a result, our standard deviations will decrease giving us the results we received above. 
