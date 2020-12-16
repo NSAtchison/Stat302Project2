@@ -81,24 +81,27 @@ With that, we finish our walkthrough on my_lm and move on to my_knn_cv.
 
 ```{r}
 tutorial_table <- matrix(data = NA, nrow = 10, ncol = 2)
-tutorial_comp_mat <- matrix(data = NA, nrow = nrow(my_penguins), ncol = 2)
+tutorial_comp_mat <- matrix(data = NA, nrow = nrow(na.omit(my_penguins[,1:6])), ncol = 2)
+curr_row <- 1
 for(i in 1:10) {
   curr_k_nn <- i
   incorrect <- 0
   tutorial_my_knn <- my_knn_cv(train = my_penguins[,3:6], cl = my_penguins$species, k_nn = curr_k_nn, k_cv = 5)
-  tutorial_comp_mat[,1] <- as.vector(my_penguins$species)
-  #tutorial_comp_mat[,2] <- as.vector(tutorial_my_knn$Class)
-  #for(i in 1:length(my_penguins$species)) {
-    #if(tutorial_comp_mat[i,1] != tutorial_comp_mat[i,2]) {
-     # incorrect <- incorrect + 1
-    #}
-  #}
-  #tutorial_table[i,1] <- incorrect / length(my_penguins$species)
-  #tutorial_table[i,2] <- tutorial_my_knn$CV_error
+  tut_data <- na.omit(my_penguins[,1:6])
+  tutorial_comp_mat[,1] <- as.vector(tut_data$species)
+  tutorial_comp_mat[,2] <- tutorial_my_knn$Class
+  for(i in 1:length(tutorial_my_knn$Class)) {
+    if(tutorial_comp_mat[i,1] != tutorial_comp_mat[i,2]) {
+      incorrect <- incorrect + 1
+    }
+  }
+  tutorial_table[curr_row,1] <- incorrect / length(tutorial_my_knn$Class)
+  tutorial_table[curr_row,2] <- tutorial_my_knn$CV_error
+  curr_row <- curr_row + 1
 }
-
+tutorial_table
 ```
-
+I would choose the k_nn = 1 model for the training misclassification rate and the k_nn = 5 for the CV misclassification rate. In practice, I would choose the model using k_nn = 5 from the CV misclassification rate because in order to find the CV misclassification rate, we ran a cross-validation that ran through 5 folds. What this means is that it found multiple training misclassification rates, then found the average of those misclassification rates to find the CV misclassification rate. Overall, the CV misclassification rate is more consistent in finding error in our model than the training misclassification rate is.   
 
 With wrapping up my_knn_cv, we get to the final function within our 
 package, my_rf_cv
