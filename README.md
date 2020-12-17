@@ -22,7 +22,7 @@ library(Stat302Project2)
 # install.packages("devtools")
 devtools::install_github("NSAtchison/Stat302Project2", build_vignette = TRUE, build_opts = c())
 library(Stat302Project2)
-# Use this to view the vignette in the corncob HTML help
+# Use this to view the vignette in the Stat302Project2 HTML help
 help(package = "Stat302Project2", help_type = "html")
 # Use this to view the vignette as an isolated HTML file
 utils::browseVignettes(package = "Stat302Project2")
